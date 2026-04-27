@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>2 Years of Us 💕</title>
+
+  <!-- ✨ CUTE FONTS -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Quicksand:wght@300;400;500;600&family=Pacifico&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --pink:       #ff7eb3;
+      --rose:       #ff4d88;
+      --blush:      #ffe0ec;
+      --lavender:   #c9b8ff;
+      --peach:      #ffcba4;
+      --cream:      #fff8f0;
+      --text-dark:  #5a2d4c;
+      --text-mid:   #9b5a7a;
+      --gold:       #f7c59f;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: var(--cream);
+      color: var(--text-dark);
+      overflow-x: hidden;
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E🌸%3C/text%3E%3C/svg%3E") 16 16, auto;
+    }
+
+    /* ─── CANVAS (Three.js floating hearts background) ─── */
+    #bg-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── MUSIC PLAYER ─── */
+    #music-btn {
+      position: fixed;
+      bottom: 24px; right: 20px;
+      z-index: 999;
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--rose), var(--lavender));
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(255,77,136,.4);
+      display: flex; align-items: center; justify-content: center;
+      animation: pulse-btn 2s infinite;
+      transition: transform .2s;
+    }
+    #music-btn:hover { transform: scale(1.1); }
+    @keyframes pulse-btn {
+      0%,100% { box-shadow: 0 4px 20px rgba(255,77,136,.4); }
+      50%      { box-shadow: 0 4px 30px rgba(255,77,136,.8); }
+    }
+    #music-note-toast {
+      position: fixed;
+      bottom: 86px; right: 16px;
+      background: white;
+      color: var(--rose);
+      font-family: 'Dancing Script', cursive;
+      font-size: 13px;
+      padding: 8px 14px;
+      border-radius: 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,.12);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .4s;
+      white-space: nowrap;
+    }
+    #music-note-toast.show { opacity: 1; }
+
+    /* ─── HERO SECTION ─── */
+    #hero {
+      position: relative;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 24px;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .hero-bg-circle {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: .35;
+      animation: float-circle 8s ease-in-out infinite;
+    }
+    .hero-bg-circle.c1 { width: 320px; height: 320px; background: var(--pink); top: -80px; left: -100px; animation-delay: 0s; }
+    .hero-bg-circle.c2 { width: 260px; height: 260px; background: var(--lavender); bottom: -60px; right: -80px; animation-delay: 3s; }
+    .hero-bg-circle.c3 { width: 180px; height: 180px; background: var(--peach); top: 40%; left: 50%; transform: translate(-50%,-50%); animation-delay: 1.5s; }
+
+    @keyframes float-circle {
+      0%,100% { transform: translateY(0) scale(1); }
+      50%      { transform: translateY(-30px) scale(1.05); }
+    }
+
+    .hero-hearts-row {
+      font-size: 28px;
+      letter-spacing: 10px;
+      margin-bottom: 16px;
+      animation: bounce-hearts 2s ease-in-out infinite;
+    }
+    @keyframes bounce-hearts {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-8px); }
+    }
+
+    .hero-date-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--rose), var(--lavender));
+      color: white;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 8px 22px;
+      border-radius: 30px;
+      margin-bottom: 22px;
+      box-shadow: 0 4px 16px rgba(255,77,136,.3);
+      animation: shimmer 3s infinite;
+    }
+    @keyframes shimmer {
+      0%,100% { box-shadow: 0 4px 16px rgba(255,77,136,.3); }
+      50%      { box-shadow: 0 6px 28px rgba(201,184,255,.6); }
+    }
+
+    .hero-title {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(40px, 11vw, 72px);
+      line-height: 1.15;
+      background: linear-gradient(135deg, var(--rose) 0%, var(--lavender) 50%, var(--peach) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 18px;
+      text-shadow: none;
+      animation: title-glow 3s ease-in-out infinite;
+    }
+    @keyframes title-glow {
+      0%,100% { filter: drop-shadow(0 0 8px rgba(255,77,136,.3)); }
+      50%      { filter: drop-shadow(0 0 18px rgba(201,184,255,.7)); }
+    }
+
+    /* 💌 HERO TEXT AREA — Add your opening lines here */
+    .hero-subtitle {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(18px, 5vw, 26px);
+      color: var(--text-mid);
+      max-width: 380px;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .scroll-hint {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-mid);
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      animation: fade-bounce 2.5s ease-in-out infinite;
+    }
+    .scroll-hint span { font-size: 20px; }
+    @keyframes fade-bounce {
+      0%,100% { opacity: .5; transform: translateY(0); }
+      50%      { opacity: 1;  transform: translateY(6px); }
+    }
+
+    /* ─── SECTION TITLES ─── */
+    .section-title {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(28px, 8vw, 48px);
+      text-align: center;
+      background: linear-gradient(135deg, var(--rose), var(--lavender));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+    }
+    .section-tagline {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(16px, 4.5vw, 22px);
+      color: var(--text-mid);
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    /* ─── PHOTO GRID / GALLERY ─── */
+    .gallery-section {
+      position: relative;
+      z-index: 1;
+      padding: 60px 20px;
+    }
+
+    /* Decorative divider */
+    .divider {
+      text-align: center;
+      font-size: 24px;
+      letter-spacing: 12px;
+      margin: 10px 0 50px;
+      opacity: .6;
+      animation: bounce-hearts 2s ease-in-out infinite;
+    }
+
+    /* ── Grid layouts ── */
+    .grid-masonry {
+      display: grid;
+      gap: 16px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* Layout A: 1 big + 2 small side by side */
+    .grid-a {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+    }
+    .grid-a .photo-card:nth-child(1) { grid-column: 1 / -1; }
+
+    /* Layout B: 2 equal columns */
+    .grid-b { grid-template-columns: 1fr 1fr; }
+
+    /* Layout C: single full-width */
+    .grid-c { grid-template-columns: 1fr; }
+
+    /* Layout D: 3 small in a row */
+    .grid-d { grid-template-columns: 1fr 1fr 1fr; }
+
+    /* ── Photo Card ── */
+    .photo-card {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--blush);
+  box-shadow: 0 8px 40px rgba(255,77,136,.18);
+  opacity: 0;
+  transform: translateY(80px) scale(.88) rotateX(8deg);
+  transition: opacity .9s cubic-bezier(.22,1,.36,1),
+              transform .9s cubic-bezier(.22,1,.36,1),
+              box-shadow .4s ease;
+  transform-style: preserve-3d;
+  perspective: 600px;
+  will-change: transform, opacity;
+}
+.photo-card.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1) rotateX(0deg);
+}
+/* Each card gets a staggered cinematic entrance */
+.photo-card:nth-child(1) { transition-delay: 0s; }
+.photo-card:nth-child(2) { transition-delay: .12s; }
+.photo-card:nth-child(3) { transition-delay: .24s; }
+.photo-card:nth-child(4) { transition-delay: .36s; }
+.photo-card:nth-child(5) { transition-delay: .48s; }
+.photo-card:nth-child(6) { transition-delay: .60s; }
+
+.photo-card:hover {
+  transform: scale(1.05) rotate(1deg) translateY(-6px);
+  box-shadow: 0 28px 60px rgba(255,77,136,.38),
+              0 0 0 2px rgba(255,126,179,.3);
+  z-index: 10;
+}
+.photo-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  min-height: 160px;
+  transition: transform .6s cubic-bezier(.22,1,.36,1), filter .4s ease;
+  filter: brightness(.97) saturate(1.05);
+}
+.photo-card:hover img {
+  transform: scale(1.08);
+  filter: brightness(1.06) saturate(1.18);
+}
+.photo-card .photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top,
+    rgba(90,45,76,.65) 0%,
+    rgba(90,45,76,.1) 50%,
+    transparent 100%);
+  display: flex;
+  align-items: flex-end;
+  padding: 16px;
+  opacity: 0;
+  transition: opacity .35s ease;
+}
+.photo-card:hover .photo-overlay { opacity: 1; }
+    .photo-overlay-text {
+      font-family: 'Dancing Script', cursive;
+      color: white;
+      font-size: 15px;
+      text-shadow: 0 1px 4px rgba(0,0,0,.4);
+    }
+
+    /* ── Polaroid style for some cards ── */
+    .photo-card.polaroid {
+      background: white;
+      padding: 10px 10px 30px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.08);
+      transform: translateY(50px) rotate(-2deg);
+    }
+    .photo-card.polaroid.visible { transform: translateY(0) rotate(-2deg); }
+    .photo-card.polaroid:nth-child(even) { transform: translateY(50px) rotate(2deg); }
+    .photo-card.polaroid:nth-child(even).visible { transform: translateY(0) rotate(2deg); }
+    .photo-card.polaroid:hover { transform: scale(1.06) rotate(0deg) translateY(-8px) !important; }    
+    .photo-card.polaroid img { border-radius: 10px; min-height: 180px; }
+    .polaroid-caption {
+      font-family: 'Dancing Script', cursive;
+      color: var(--text-mid);
+      text-align: center;
+      font-size: 14px;
+      padding-top: 8px;
+      height: 22px;
+      /* ✏️ Each polaroid caption is filled below in the HTML cards */
+    }
+
+    /* ─── CAPTION BLOCKS above/below groups ─── */
+    .caption-block {
+      text-align: center;
+      padding: 30px 20px 10px;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+    .caption-block h3 {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(22px, 6vw, 34px);
+      background: linear-gradient(135deg, var(--rose), var(--peach));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+    .caption-block p {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(15px, 4vw, 19px);
+      color: var(--text-mid);
+      line-height: 1.6;
+    }
+
+    /* ─── FLOATING STICKER EMOJIS ─── */
+    .sticker {
+      display: inline-block;
+      font-size: 28px;
+      animation: sticker-pop 3s ease-in-out infinite;
+    }
+    @keyframes sticker-pop {
+      0%,100% { transform: rotate(-8deg) scale(1); }
+      50%      { transform: rotate(8deg) scale(1.15); }
+    }
+
+    /* ─── LOVE LETTER SECTION ─── */
+    #love-letter {
+      position: relative;
+      z-index: 1;
+      padding: 60px 24px 80px;
+      text-align: center;
+    }
+    .letter-card {
+      max-width: 440px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 28px;
+      padding: 36px 30px 40px;
+      box-shadow: 0 20px 60px rgba(255,77,136,.15), 0 0 0 1px rgba(255,77,136,.08);
+      position: relative;
+      overflow: hidden;
+    }
+    .letter-card::before {
+      content: '💌';
+      position: absolute;
+      top: -18px; left: 50%; transform: translateX(-50%);
+      font-size: 36px;
+      filter: drop-shadow(0 4px 8px rgba(255,77,136,.3));
+    }
+    .letter-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 27px,
+        rgba(255,126,179,.08) 28px
+      );
+      pointer-events: none;
+    }
+    .letter-heading {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(22px, 6vw, 32px);
+      color: var(--rose);
+      margin-bottom: 24px;
+      margin-top: 10px;
+    }
+
+    /* 💌 YOUR LOVE PARAGRAPH — Edit the <p> below in the HTML */
+    .letter-body {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(16px, 4.5vw, 20px);
+      color: var(--text-dark);
+      line-height: 1.9;
+      text-align: left;
+    }
+
+    .letter-signature {
+      margin-top: 28px;
+      font-family: 'Pacifico', cursive;
+      font-size: 20px;
+      color: var(--rose);
+      text-align: right;
+    }
+
+    /* ─── FINAL HERO ─── */
+    #final-section {
+      position: relative;
+      z-index: 1;
+      min-height: 60dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 24px;
+      text-align: center;
+      background: linear-gradient(180deg, transparent, rgba(255,224,236,.5));
+    }
+    .final-counter {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(52px, 18vw, 110px);
+      background: linear-gradient(135deg, var(--rose), var(--lavender), var(--peach));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 4px 20px rgba(255,77,136,.3));
+      animation: heartbeat 1.5s ease-in-out infinite;
+    }
+    @keyframes heartbeat {
+      0%,100% { transform: scale(1); }
+      14%      { transform: scale(1.06); }
+      28%      { transform: scale(1); }
+      42%      { transform: scale(1.04); }
+      70%      { transform: scale(1); }
+    }
+    .final-label {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(22px, 6vw, 36px);
+      color: var(--text-mid);
+      margin-top: 8px;
+    }
+    .final-row {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 28px;
+      font-size: 32px;
+      animation: bounce-hearts 2.5s ease-in-out infinite;
+    }
+
+    /* ─── CONFETTI CANVAS ─── */
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 998;
+    }
+
+    /* ─── SPARKLE TRAIL (mouse) ─── */
+    .sparkle-particle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 997;
+      font-size: 16px;
+      animation: sparkle-fall .8s ease-out forwards;
+    }
+    @keyframes sparkle-fall {
+      0%   { opacity: 1; transform: translate(0,0) scale(1); }
+      100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0); }
+    }
+
+    /* ─── SCROLL REVEAL (generic) ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity .8s ease, transform .8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── LOADING SCREEN ─── */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: var(--cream);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity .8s ease;
+    }
+    #loader.hidden { opacity: 0; pointer-events: none; }
+    .loader-heart {
+      font-size: 56px;
+      animation: heartbeat 1.2s ease-in-out infinite;
+    }
+    .loader-text {
+      font-family: 'Dancing Script', cursive;
+      font-size: 22px;
+      color: var(--rose);
+      margin-top: 16px;
+      animation: fade-bounce 1.5s ease-in-out infinite;
+    }
+
+    /* ─── PETAL RAIN ─── */
+    .petal {
+      position: fixed;
+      top: -30px;
+      pointer-events: none;
+      z-index: 2;
+      font-size: 16px;
+      animation: petal-fall linear infinite;
+      opacity: .7;
+    }
+    @keyframes petal-fall {
+      0%   { transform: translateY(-30px) rotate(0deg); opacity: .8; }
+      100% { transform: translateY(110dvh) rotate(720deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ░░ LOADING SCREEN ░░ -->
+<div id="loader">
+  <div class="loader-heart">💖</div>
+  <div class="loader-text">Getting everything ready for you...</div>
+</div>
+
+<!-- ░░ THREE.JS BACKGROUND CANVAS ░░ -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- ░░ CONFETTI CANVAS ░░ -->
+<canvas id="confetti-canvas"></canvas>
+
+<!-- ░░ MUSIC BUTTON ░░ -->
+<button id="music-btn" onclick="toggleMusic()" title="Toggle music">🎵</button>
+<div id="music-note-toast">♫ Can't Help Falling in Love ♫</div>
+
+<!-- ════════════════════════════════════════════
+     HERO SECTION
+════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-bg-circle c1"></div>
+  <div class="hero-bg-circle c2"></div>
+  <div class="hero-bg-circle c3"></div>
+
+  <div class="hero-hearts-row">🌸 💕 🌸</div>
+
+  <div class="hero-date-badge">29 April 2024 → 29 April 2026</div>
+
+  <h1 class="hero-title">2 Years of Us</h1>
+
+  <!-- ✏️ EDIT: Your opening line / pet name / first sweet note to her -->
+  <p class="hero-subtitle">
+    <!-- CAPTION SPACE: e.g. "To the girl who made my world bloom..." -->
+    To the girl who made every ordinary day feel like magic ✨
+  </p>
+
+  <div class="scroll-hint">
+    <span>↓</span>
+    scroll through our story
+  </div>
+</section>
+
+<div style="background:linear-gradient(135deg,var(--rose),var(--lavender)); color:white; font-family:'Dancing Script',cursive; font-size:18px; text-align:center; padding:14px; letter-spacing:2px; position:relative; z-index:1;">
+  💕 29 April 2024 — Two years of you & me — 29 April 2026 💕
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     GALLERY SECTION 1  (Photos 1–4)
+     Caption theme: "The Beginning"
+════════════════════════════════════════════ -->
+<section class="gallery-section">
+
+  <div class="caption-block reveal">
+    <!-- ✏️ EDIT: Theme / memory label for this batch of photos -->
+    <h3>Where It All Began</h3>
+    <p>
+      <!-- CAPTION SPACE: Write something about your first moments together -->
+      That first spark that changed everything...
+    </p>
+    <div class="sticker">🌷</div>
+  </div>
+
+  <div class="divider">✦ ♡ ✦</div>
+
+  <!-- Layout A: 1 big top + 2 bottom -->
+  <div class="grid-masonry grid-a">
+
+    <!-- PHOTO 1 -->
+    <div class="photo-card">
+      <!-- ✏️ Replace src with your image path, e.g. src="photos/photo1.jpg" -->
+      <img src="photo32.jpeg" alt="Photo 1" onerror="this.style.minHeight='220px';this.style.background='linear-gradient(135deg,#ffe0ec,#c9b8ff)'"/>
+      <div class="photo-overlay"><span class="photo-overlay-text">
+        <!-- ✏️ CAPTION SPACE for Photo 1 -->
+        💕
+      </span></div>
+    </div>
+
+    <!-- PHOTO 2 -->
+    <div class="photo-card">
+      <img src="photo5.jpeg" alt="Photo 2" onerror="this.style.minHeight='160px';this.style.background='linear-gradient(135deg,#ffcba4,#ff7eb3)'"/>
+      <div class="photo-overlay"><span class="photo-overlay-text">
+        <!-- ✏️ CAPTION SPACE for Photo 2 -->
+        🌸
+      </span></div>
+    </div>
+
+    <!-- PHOTO 3 -->
+    <div class="photo-card polaroid">
+      <img src="photo24.jpeg" alt="Photo 3" onerror="this.style.minHeight='160px';this.style.background='linear-gradient(135deg,#c9b8ff,#ffe0ec)'"/>
+      <div class="polaroid-caption">
+        <!-- ✏️ POLAROID CAPTION for Photo 3 -->
+        our day 1
+      </div>
+    </div>
+
+    <!-- PHOTO 4 -->
+    <div class="photo-card polaroid">
+      <img src="photo8.jpeg" alt="Photo 4" onerror="this.style.minHeight='160px';this.style.background='linear-gradient(135deg,#f7c59f,#ff7eb3)'"/>
+      <div class="polaroid-caption">
+        <!-- ✏️ POLAROID CAPTION for Photo 4 -->
+        us ☁️
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     GALLERY SECTION 2  (Photos 5–8)
+     Caption theme: "Adventures"
+════════════════════════════════════════════ -->
+<section class="gallery-section">
+
+  <div class="caption-block reveal">
+    <!-- ✏️ EDIT -->
+    <h3>Our Little Adventures</h3>
+    <p>
+      <!-- CAPTION SPACE -->
+      Every place is better when you're beside me 🗺️
+    </p>
+    <div class="sticker">🎀</div>
+  </div>
+
+  <div class="divider">✦ ♡ ✦</div>
+
+  <div class="grid-masonry grid-b">
+
+    <!-- PHOTO 5 -->
+    <div class="photo-card">
+      <img src="photo6.jpeg" alt="Photo 5" onerror="this.style.minHeight='200px';this.style.background='linear-gradient(135deg,#ff7eb3,#ffcba4)'"/>
+      <div class="photo-overlay"><span class="photo-overlay-text"><!-- ✏️ Caption 5 -->🌅</span></div>
+    </div>
+
+    <!-- PHOTO 6 -->
+    <div class="photo-card">
+      <img src="photo2.jpeg" alt="Photo 6" onerror="this.style.minHeight='200px';this.style.background='linear-gradient(135deg,#c9b8ff,#ff7eb3)'"/>
+      <div class="photo-overlay"><span class="photo-overlay-text"><!-- ✏️ Caption 6 -->✨</span></div>
+    </div>
+
+    <!-- PHOTO 7 -->
+    <div class="photo-card polaroid">
+      <img src="photo10.jpeg" alt="Photo 7" onerror="this.style.minHeight='180px';this.style.background='linear-gradient(135deg,#ffe0ec,#c9b8ff)'"/>
+      <div class="polaroid-caption"><!-- ✏️ Caption 7 -->adventure mode 🌿</div>
+    </div>
+
+    <!-- PHOTO 8 -->
+    <div class="photo-card polaroid">
+      <img src="photo26.jpeg" alt="Photo 8" onerror="this.style.minHeight='180px';this.style.background='linear-gradient(135deg,#ffcba4,#c9b8ff)'"/>
+      <div class="polaroid-caption"><!-- ✏️ Caption 8 -->best co-pilot 🌸</div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     GALLERY SECTION 3  (Photos 9–12)
+     Caption theme: "Silly & Candid"
+════════════════════════════════════════════ -->
+<section class="gallery-section">
+
+  <div class="caption-block reveal">
+    <!-- ✏️ EDIT -->
+    <h3>Silly Little Us</h3>
+    <p>
+      <!-- CAPTION SPACE -->
+      The laughs that I will never forget 🤭
+    </p>
+    <div class="sticker">🎠</div>
+  </div>
+
+  <div class="divider">✦ ♡ ✦</div>
+
+  <!-- Full-width + 3 small -->
+  <div class="grid-masonry grid-a">
+
+    <!-- PHOTO 9 -->
+    <div class="photo-card">
+      <img src="photo27.jpeg" alt="Photo 9" onerror="this.style.minHeight='240px';this.style.background='linear-gradient(135deg,#ff4d88,#c9b8ff)'"/>
+      <div class="photo-overlay"><span class="photo-overlay-text"><!-- ✏️ Caption 9 -->😂💕</span></div>
+    </div>
+
+    <!-- PHOTO 10 -->
+    <div class="photo-card polaroid">
+      <img src="photo12.jpeg" alt="Photo 10" onerror="this.style.minHeight='160px';this.style.background='linear-gradient(135deg,#ffe0ec,#f7c59f)'"/>
+      <div class="polaroid-caption"><!-- ✏️ Caption 10 -->goofballs 🤡</div>
+    </div>
+
+    <!-- PHOTO 11 -->
+    <div class="photo-card polaroid">
+      <img src="photo23.jpeg" alt="Photo 11" onerror="this.style.minHeight='160px';this.style.background='linear-gradient(135deg,#c9b8ff,#ff7eb3)'"/>
+      <div class="polaroid-caption"><!-- ✏️ Caption 11 -->my fave smile 🌸</div>
+    </div>
+
+    <!-- PHOTO 12 -->
+    <div class="photo-card">
+      <img src="photo18.jpeg" alt="Photo 12" onerror="this.style.minHeight='180px';this.style.background='linear-gradient(135deg,#ffcba4,#ff4d88)'"/>
+      <div class="photo-overlay"><span class="photo-overlay-text"><!-- ✏️ Caption 12 -->🌺</span></div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     GALLERY SECTION 4  (Photos 13–18)
+     Caption theme: "Everyday Magic"
+════════════════════════════════════════════ -->
+<section class="gallery-section">
+
+  <div class="caption-block reveal">
+    <!-- ✏️ EDIT -->
+    <h3>Everyday Magic</h3>
+    <p>
+      <!-- CAPTION SPACE -->
+      The quiet moments I treasure the most 🌙
+    </p>
+    <div class="sticker">🌙</div>
+  </div>
+
+  <div class="divider">✦ ♡ ✦</div>
+
+  <div class="grid-masonry grid-b">
+
+    <!-- PHOTOS 13–18 -->
+    <div class="photo-card">
+      <img src="photo31.jpeg" alt="Photo 13" onerror="this.style.minHeight='200px';this.style.background='linear-gradient(135deg,#ffe0ec,#ff7eb3)'"/>
+      <div class="photo-overlay"><span class="photo-overlay-text"><!-- ✏️ Caption 13 -->🌼</span></div>
+    </div>
+    <div class="photo-card">
+      <img src="photo19.jpeg" alt="Photo 14" onerror="this.style.minHeight='200px';this.style.background='linear-gradient(135deg,#c9b8ff,#ffcba4)'"/>
+      <div class="photo-overlay"><span class="photo-overlay-text"><!-- ✏️ Caption 14 -->☀️</span></div>
+    </div>
+    <div class="photo-card polaroid">
+      <img src="photo20.jpeg" alt="Photo 15" onerror="this.style.minHeight='170px';this.style.background='linear-gradient(135deg,#ff7eb3,#f7c59f)'"/>
+      <div class="polaroid-caption"><!-- ✏️ Caption 15 -->lazy Sunday 🧸</div>
+    </div>
+    <div class="photo-card polaroid">
+      <img src="photo21.jpeg" alt="Photo 16" onerror="this.style.minHeight='170px';this.style.background='linear-gradient(135deg,#c9b8ff,#ffe0ec)'"/>
+      <div class="polaroid-caption"><!-- ✏️ Caption 16 -->golden hour 🌇</div>
+    </div>
+    <div class="photo-card">
+      <img src="photo3.jpeg" alt="Photo 17" onerror="this.style.minHeight='190px';this.style.background='linear-gradient(135deg,#ff4d88,#ffcba4)'"/>
+      <div class="photo-overlay"><span class="photo-overlay-text"><!-- ✏️ Caption 17 -->🌸</span></div>
+    </div>
+    <div class="photo-card">
+      <img src="photo15.jpeg" alt="Photo 18" onerror="this.style.minHeight='190px';this.style.background='linear-gradient(135deg,#f7c59f,#c9b8ff)'"/>
+      <div class="photo-overlay"><span class="photo-overlay-text"><!-- ✏️ Caption 18 -->💫</span></div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     GALLERY SECTION 5  (Photos 19–24)
+     Caption theme: "Best Dates"
+════════════════════════════════════════════ -->
+<section class="gallery-section">
+
+  <div class="caption-block reveal">
+    <!-- ✏️ EDIT -->
+    <h3>Our Best Dates</h3>
+    <p>
+      <!-- CAPTION SPACE -->
+      Every dinner, every walk, every "should we go?" ☕🌃
+    </p>
+    <div class="sticker">🍓</div>
+  </div>
+
+  <div class="divider">✦ ♡ ✦</div>
+
+  <!-- 3-column row + bigger card -->
+  <div class="grid-masonry grid-d" style="margin-bottom:16px">
+    <div class="photo-card">
+      <img src="photo33.jpeg" alt="Photo 19" onerror="this.style.minHeight='130px';this.style.background='linear-gradient(135deg,#ffe0ec,#ff7eb3)'"/>
+      <div class="photo-overlay"><span class="photo-overlay-text"><!-- ✏️ 19 -->☕</span></div>
+    </div>
+    <div class="photo-card">
+      <img src="" alt="Photo 20" onerror="this.style.minHeight='130px';this.style.background='linear-gradient(135deg,#c9b8ff,#ff4d88)'"/>
+      <div class="photo-overlay"><span class="photo-overlay-text"><!-- ✏️ 20 -->🍕</span></div>
+    </div>
+    <div class="photo-card">
+      <img src="" alt="Photo 21" onerror="this.style.minHeight='130px';this.style.background='linear-gradient(135deg,#ffcba4,#c9b8ff)'"/>
+      <div class="photo-overlay"><span class="photo-overlay-text"><!-- ✏️ 21 -->🌃</span></div>
+    </div>
+  </div>
+
+  <div class="grid-masonry grid-a">
+    <div class="photo-card polaroid">
+      <img src="" alt="Photo 22" onerror="this.style.minHeight='200px';this.style.background='linear-gradient(135deg,#ff7eb3,#f7c59f)'"/>
+      <div class="polaroid-caption"><!-- ✏️ Caption 22 -->our spot 💌</div>
+    </div>
+    <div class="photo-card polaroid">
+      <img src="" alt="Photo 23" onerror="this.style.minHeight='160px';this.style.background='linear-gradient(135deg,#ffe0ec,#c9b8ff)'"/>
+      <div class="polaroid-caption"><!-- ✏️ Caption 23 -->date night 🌹</div>
+    </div>
+    <div class="photo-card polaroid">
+      <img src="" alt="Photo 24" onerror="this.style.minHeight='160px';this.style.background='linear-gradient(135deg,#ffcba4,#ff7eb3)'"/>
+      <div class="polaroid-caption"><!-- ✏️ Caption 24 -->we love food 😋</div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     GALLERY SECTION 6  (Photos 25–30)
+     Caption theme: "Milestones"
+════════════════════════════════════════════ -->
+
+
+
+<!-- ════════════════════════════════════════════
+     GALLERY SECTION 7  (Photos 31–36)
+     Caption theme: "My Favourite You"
+════════════════════════════════════════════ -->
+<section class="gallery-section">
+
+  <div class="caption-block reveal">
+    <!-- ✏️ EDIT -->
+    <h3>My Favourite You</h3>
+    <p>
+      <!-- CAPTION SPACE -->
+      I love every version of you 🥰
+    </p>
+    <div class="sticker">💝</div>
+  </div>
+
+  <div class="divider">✦ ♡ ✦</div>
+
+  <div class="grid-masonry grid-a">
+    <div class="photo-card">
+      <img src="" alt="Photo 31" onerror="this.style.minHeight='240px';this.style.background='linear-gradient(135deg,#ff7eb3,#c9b8ff)'"/>
+      <div class="photo-overlay"><span class="photo-overlay-text"><!-- ✏️ 31 -->you 🌺</span></div>
+    </div>
+    <div class="photo-card polaroid">
+      <img src="" alt="Photo 32" onerror="this.style.minHeight='160px';this.style.background='linear-gradient(135deg,#ffe0ec,#ff4d88)'"/>
+      <div class="polaroid-caption"><!-- ✏️ Caption 32 -->my whole heart 💗</div>
+    </div>
+    <div class="photo-card polaroid">
+      <img src="" alt="Photo 33" onerror="this.style.minHeight='160px';this.style.background='linear-gradient(135deg,#ffcba4,#c9b8ff)'"/>
+      <div class="polaroid-caption"><!-- ✏️ Caption 33 -->always 🌙</div>
+    </div>
+    <div class="photo-card">
+      <img src="" alt="Photo 34" onerror="this.style.minHeight='180px';this.style.background='linear-gradient(135deg,#c9b8ff,#ffcba4)'"/>
+      <div class="photo-overlay"><span class="photo-overlay-text"><!-- ✏️ 34 -->💫</span></div>
+    </div>
+    <div class="photo-card">
+      <img src="" alt="Photo 35" onerror="this.style.minHeight='180px';this.style.background='linear-gradient(135deg,#ff4d88,#f7c59f)'"/>
+      <div class="photo-overlay"><span class="photo-overlay-text"><!-- ✏️ 35 -->🌸</span></div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     GALLERY SECTION 8  (Photos 36–40)
+     Caption theme: "Us, Always"
+════════════════════════════════════════════ -->
+<section class="gallery-section">
+
+  <div class="caption-block reveal">
+    <!-- ✏️ EDIT -->
+    <h3>Us, Always</h3>
+    <p>
+      <!-- CAPTION SPACE -->
+      And there are still so many pages left to write 📖✨
+    </p>
+    <div class="sticker">💫</div>
+  </div>
+
+  <div class="divider">✦ ♡ ✦</div>
+
+  <div class="grid-masonry grid-b">
+    <div class="photo-card polaroid">
+      <img src="" alt="Photo 36" onerror="this.style.minHeight='170px';this.style.background='linear-gradient(135deg,#ffe0ec,#c9b8ff)'"/>
+      <div class="polaroid-caption"><!-- ✏️ Caption 36 -->us 💕</div>
+    </div>
+    <div class="photo-card polaroid">
+      <img src="" alt="Photo 37" onerror="this.style.minHeight='170px';this.style.background='linear-gradient(135deg,#ff7eb3,#ffcba4)'"/>
+      <div class="polaroid-caption"><!-- ✏️ Caption 37 -->forever 🌹</div>
+    </div>
+    <div class="photo-card" style="grid-column:1/-1">
+      <img src="" alt="Photo 38" onerror="this.style.minHeight='230px';this.style.background='linear-gradient(135deg,#ff4d88,#c9b8ff)'"/>
+      <div class="photo-overlay"><span class="photo-overlay-text"><!-- ✏️ 38 -->my person 💖</span></div>
+    </div>
+    <div class="photo-card">
+      <img src="" alt="Photo 39" onerror="this.style.minHeight='190px';this.style.background='linear-gradient(135deg,#c9b8ff,#ff7eb3)'"/>
+      <div class="photo-overlay"><span class="photo-overlay-text"><!-- ✏️ 39 -->🌸</span></div>
+    </div>
+    <div class="photo-card">
+      <img src="" alt="Photo 40" onerror="this.style.minHeight='190px';this.style.background='linear-gradient(135deg,#ffcba4,#ff4d88)'"/>
+      <div class="photo-overlay"><span class="photo-overlay-text"><!-- ✏️ 40 -->💕 always</span></div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     LOVE LETTER SECTION
+════════════════════════════════════════════ -->
+<section id="love-letter">
+
+  <div class="caption-block reveal" style="margin-bottom:30px">
+    <h3 class="section-title">A Note For You</h3>
+    <p class="section-tagline">from my heart to yours 💌</p>
+  </div>
+
+  <div class="letter-card reveal">
+    <div class="letter-heading">My Love,</div>
+
+    <!-- ✏️ ════════════════════════════════════════════
+         YOUR PARAGRAPH — Write your 2-year journey here!
+         Replace everything inside this <p> tag.
+    ════════════════════════════════════════════ -->
+    <p class="letter-body">
+      <!-- PARAGRAPH SPACE: Write your message about your 2-year journey here.
+           Tell her everything — the first time you knew, the hard days you
+           got through together, the small things she does that you love,
+           and how you feel about the years ahead. This is all yours. 💕 -->
+
+      [ Write your message to her here... ]
+
+    </p>
+
+    <div class="letter-signature">
+      <!-- ✏️ EDIT: Your name or nickname she calls you -->
+      Always yours, [Your Name] 💕
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     FINAL COUNTER SECTION
+════════════════════════════════════════════ -->
+<section id="final-section">
+  <p style="font-family:'Dancing Script',cursive; font-size:18px; color:var(--text-mid); margin-bottom:8px; opacity:.8;">
+    together for
+  </p>
+  <div class="final-counter">730</div>
+  <div class="final-label">days & counting 💖</div>
+
+  <div style="margin-top:30px; font-family:'Pacifico',cursive; font-size:clamp(18px,5vw,28px); color:var(--rose);">
+    <!-- ✏️ EDIT: Your favourite line or wish -->
+    Here's to forever and a day more ✨
+  </div>
+
+  <div class="final-row">🌸 💕 🌹 💕 🌸</div>
+</section>
+
+
+<!-- ░░ HIDDEN AUDIO ░░ -->
+<!--
+  ════════════════════════════════════════════
+  MUSIC SETUP:
+  1. Download an MP3 of "Can't Help Falling in Love"
+  2. Place it in the same folder as this index.html
+  3. Change the src below to your filename, e.g. src="cant-help-falling-in-love.mp3"
+  ════════════════════════════════════════════
+-->
+<audio id="bg-music" loop>
+  <!-- ✏️ MUSIC FILE: Replace with your MP3 path -->
+  <source src="cant-help-falling-in-love.mp3" type="audio/mpeg" />
+</audio>
+
+
+<!-- ░░ THREE.JS CDN ░░ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+/* ═══════════════════════════════════════════
+   THREE.JS — FLOATING HEARTS BACKGROUND
+═══════════════════════════════════════════ */
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+  camera.position.z = 5;
+
+  // Heart shape
+  function makeHeartGeometry(size) {
+    const shape = new THREE.Shape();
+    shape.moveTo(0, size * 0.35);
+    shape.bezierCurveTo(0, size * 0.55, size * 0.45, size * 0.55, size * 0.45, size * 0.2);
+    shape.bezierCurveTo(size * 0.45, -size * 0.05, size * 0.15, -size * 0.25, 0, -size * 0.45);
+    shape.bezierCurveTo(-size * 0.15, -size * 0.25, -size * 0.45, -size * 0.05, -size * 0.45, size * 0.2);
+    shape.bezierCurveTo(-size * 0.45, size * 0.55, 0, size * 0.55, 0, size * 0.35);
+    return new THREE.ShapeGeometry(shape);
+  }
+
+  const colors = [0xff7eb3, 0xc9b8ff, 0xffcba4, 0xff4d88, 0xf7c59f];
+  const hearts = [];
+
+  for (let i = 0; i < 38; i++) {
+    const size = 0.06 + Math.random() * 0.18;
+    const geo  = makeHeartGeometry(size);
+    const mat  = new THREE.MeshBasicMaterial({
+      color: colors[Math.floor(Math.random() * colors.length)],
+      transparent: true,
+      opacity: 0.12 + Math.random() * 0.22,
+      side: THREE.DoubleSide
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.set(
+      (Math.random() - .5) * 14,
+      (Math.random() - .5) * 10,
+      (Math.random() - .5) * 3
+    );
+    mesh.rotation.z = Math.random() * Math.PI * 2;
+    mesh.userData = {
+      speedY:  0.002 + Math.random() * 0.006,
+      speedR:  (Math.random() - .5) * 0.01,
+      wobbleX: Math.random() * 0.004,
+      phase:   Math.random() * Math.PI * 2
+    };
+    scene.add(mesh);
+    hearts.push(mesh);
+  }
+
+  let t = 0;
+  function animate() {
+    requestAnimationFrame(animate);
+    t += 0.01;
+    hearts.forEach(h => {
+      h.position.y += h.userData.speedY;
+      h.position.x += Math.sin(t + h.userData.phase) * h.userData.wobbleX;
+      h.rotation.z  += h.userData.speedR;
+      if (h.position.y > 6) h.position.y = -6;
+    });
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+})();
+
+
+/* ═══════════════════════════════════════════
+   MUSIC — AUTO-PLAY ON FIRST TAP / LOAD
+═══════════════════════════════════════════ */
+const audio = document.getElementById('bg-music');
+audio.volume = 0.5;
+let musicOn = false;
+
+function tryAutoplay() {
+  audio.play().then(() => {
+    musicOn = true;
+    document.getElementById('music-btn').textContent = '🎶';
+    showMusicToast();
+  }).catch(() => {});
+}
+
+function toggleMusic() {
+  if (musicOn) {
+    audio.pause();
+    musicOn = false;
+    document.getElementById('music-btn').textContent = '🎵';
+  } else {
+    audio.play().then(() => {
+      musicOn = true;
+      document.getElementById('music-btn').textContent = '🎶';
+      showMusicToast();
+    });
+  }
+}
+
+function showMusicToast() {
+  const t = document.getElementById('music-note-toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// Try autoplay immediately, fallback on first interaction
+window.addEventListener('load', tryAutoplay);
+// Aggressive retry — browsers block autoplay until ANY interaction
+const unlockEvents = ['touchstart','touchend','click','scroll','keydown','pointerdown'];
+unlockEvents.forEach(ev =>
+  document.addEventListener(ev, () => {
+    if (!musicOn) {
+      audio.play().then(() => {
+        musicOn = true;
+        document.getElementById('music-btn').textContent = '🎶';
+        showMusicToast();
+      }).catch(() => {});
+    }
+  }, { passive: true })
+);
+// Keep retrying silently every 2s until it works
+const musicRetry = setInterval(() => {
+  if (musicOn) { clearInterval(musicRetry); return; }
+  tryAutoplay();
+}, 2000);
+
+
+/* ═══════════════════════════════════════════
+   SCROLL REVEAL — PHOTO CARDS & .reveal
+═══════════════════════════════════════════ */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const siblings = [...el.parentElement.querySelectorAll('.photo-card')];
+      const idx = siblings.indexOf(el);
+      const delay = el.classList.contains('photo-card') ? idx * 110 : 0;
+      setTimeout(() => el.classList.add('visible'), delay);
+      revealObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+
+document.querySelectorAll('.photo-card, .reveal').forEach(el => revealObserver.observe(el));
+
+// 📱 MOBILE TILT — gyroscope parallax on photo cards
+if (window.DeviceOrientationEvent) {
+  window.addEventListener('deviceorientation', (e) => {
+    const tiltX = (e.gamma || 0) / 30; // left-right
+    const tiltY = (e.beta  || 0) / 60; // front-back
+    document.querySelectorAll('.photo-card.visible').forEach(card => {
+      card.style.transform = `translateY(0) scale(1) rotateX(${tiltY * 4}deg) rotateY(${tiltX * 4}deg)`;
+    });
+  }, { passive: true });
+}
+
+
+/* ═══════════════════════════════════════════
+   SPARKLE TRAIL (touch / mouse)
+═══════════════════════════════════════════ */
+const sparkles = ['✦','★','♡','•','⋆','✿','❀'];
+function spawnSparkle(x, y) {
+  const el = document.createElement('div');
+  el.className = 'sparkle-particle';
+  el.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
+  el.style.left = x + 'px';
+  el.style.top  = y + 'px';
+  el.style.color = `hsl(${310 + Math.random()*80},80%,65%)`;
+  el.style.setProperty('--tx', (Math.random()-0.5)*60 + 'px');
+  el.style.setProperty('--ty', -(20 + Math.random()*40) + 'px');
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 900);
+}
+let lastSparkle = 0;
+document.addEventListener('mousemove', e => {
+  if (Date.now() - lastSparkle < 60) return;
+  lastSparkle = Date.now();
+  spawnSparkle(e.clientX, e.clientY);
+});
+document.addEventListener('touchmove', e => {
+  if (Date.now() - lastSparkle < 80) return;
+  lastSparkle = Date.now();
+  const t = e.touches[0];
+  spawnSparkle(t.clientX, t.clientY);
+}, { passive: true });
+
+
+/* ═══════════════════════════════════════════
+   CONFETTI — BURSTS ON FINAL SECTION VIEW
+═══════════════════════════════════════════ */
+const confettiCanvas = document.getElementById('confetti-canvas');
+const ctx2d = confettiCanvas.getContext('2d');
+confettiCanvas.width  = window.innerWidth;
+confettiCanvas.height = window.innerHeight;
+window.addEventListener('resize', () => {
+  confettiCanvas.width  = window.innerWidth;
+  confettiCanvas.height = window.innerHeight;
+});
+
+let confettiParticles = [];
+let confettiRunning = false;
+
+function launchConfetti() {
+  if (confettiRunning) return;
+  confettiRunning = true;
+  const cols = ['#ff7eb3','#c9b8ff','#ffcba4','#ff4d88','#f7c59f','#ff99cc','#fff'];
+  for (let i = 0; i < 130; i++) {
+    confettiParticles.push({
+      x: Math.random() * window.innerWidth,
+      y: -10 - Math.random() * 200,
+      r: 3 + Math.random() * 6,
+      c: cols[Math.floor(Math.random() * cols.length)],
+      vx: (Math.random() - .5) * 3,
+      vy: 2 + Math.random() * 4,
+      vr: (Math.random() - .5) * 0.2,
+      rot: Math.random() * Math.PI,
+      shape: Math.random() > .5 ? 'rect' : 'circle'
+    });
+  }
+  animateConfetti();
+}
+
+function animateConfetti() {
+  ctx2d.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+  confettiParticles.forEach(p => {
+    ctx2d.save();
+    ctx2d.translate(p.x, p.y);
+    ctx2d.rotate(p.rot);
+    ctx2d.fillStyle = p.c;
+    ctx2d.globalAlpha = 0.85;
+    if (p.shape === 'rect') ctx2d.fillRect(-p.r, -p.r/2, p.r*2, p.r);
+    else { ctx2d.beginPath(); ctx2d.arc(0,0,p.r,0,Math.PI*2); ctx2d.fill(); }
+    ctx2d.restore();
+    p.x  += p.vx; p.y += p.vy; p.rot += p.vr; p.vy += 0.05;
+  });
+  confettiParticles = confettiParticles.filter(p => p.y < confettiCanvas.height + 20);
+  if (confettiParticles.length) requestAnimationFrame(animateConfetti);
+  else { confettiRunning = false; ctx2d.clearRect(0,0,confettiCanvas.width,confettiCanvas.height); }
+}
+
+const finalObserver = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) { launchConfetti(); finalObserver.disconnect(); }
+}, { threshold: 0.3 });
+finalObserver.observe(document.getElementById('final-section'));
+
+
+/* ═══════════════════════════════════════════
+   FLOATING PETALS RAIN
+═══════════════════════════════════════════ */
+const petals = ['🌸','🌺','🌷','🌹','💮','🏵️'];
+function spawnPetal() {
+  const el = document.createElement('div');
+  el.className = 'petal';
+  el.textContent = petals[Math.floor(Math.random() * petals.length)];
+  el.style.left    = Math.random() * 100 + 'vw';
+  el.style.fontSize = (10 + Math.random() * 14) + 'px';
+  el.style.animationDuration = (6 + Math.random() * 8) + 's';
+  el.style.animationDelay   = (Math.random() * 4) + 's';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 14000);
+}
+// Spawn petals periodically
+setInterval(spawnPetal, 1200);
+for (let i = 0; i < 6; i++) spawnPetal(); // initial burst
+
+
+/* ═══════════════════════════════════════════
+   LOADER
+═══════════════════════════════════════════ */
+window.addEventListener('load', () => {
+  setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1200);
+});
+
+</script>
+</body>
+</html>
